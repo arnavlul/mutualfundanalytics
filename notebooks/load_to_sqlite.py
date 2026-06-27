@@ -55,8 +55,7 @@ def load_data_to_sqlite():
     df_fund = df_fund[fund_cols]
     
     # Clear existing data first to prevent duplicate PK errors on multiple runs
-    cursor.execute("DELETE FROM dim_fund")
-    load_df(df_fund, 'dim_fund')
+    # (Moved to Step 3 below to avoid FK constraints)
 
     # 3. Load Cleaned Fact Tables
     # Clear existing facts to support clean re-runs
@@ -67,44 +66,23 @@ def load_data_to_sqlite():
     cursor.execute("DELETE FROM fact_aum")
     cursor.execute("DELETE FROM fact_sip_industry")
     cursor.execute("DELETE FROM dim_date")
+    cursor.execute("DELETE FROM dim_fund")
     conn.commit()
 
-    # fact_nav (from clean_nav.csv)
-    df_nav = pd.read_csv(f"{processed_dir}/clean_nav.csv")
-    df_nav['date'] = pd.to_datetime(df_nav['date'])
-    load_df(df_nav, 'fact_nav')
+    load_df(df_fund, 'dim_fund')
 
-    # fact_transactions (from clean_investor_transactions.csv)
+    # Load all DataFrames to compile the date list first
+    df_nav = pd.read_csv(f"{processed_dir}/clean_nav_history.csv")
+    df_nav['date'] = pd.to_datetime(df_nav['date'])
+
     df_tx = pd.read_csv(f"{processed_dir}/clean_investor_transactions.csv")
     df_tx['transaction_date'] = pd.to_datetime(df_tx['transaction_date'])
-    load_df(df_tx, 'fact_transactions')
 
-    # fact_performance (from clean_scheme_performance.csv)
-    df_perf = pd.read_csv(f"{processed_dir}/clean_scheme_performance.csv")
-    max_nav_date = df_nav['date'].max().strftime('%Y-%m-%d')
-    df_perf['as_of_date'] = max_nav_date
-    df_perf = df_perf[[
-        'amfi_code', 'as_of_date', 'return_1yr_pct', 'return_3yr_pct', 'return_5yr_pct',
-        'benchmark_3yr_pct', 'alpha', 'beta', 'sharpe_ratio', 'sortino_ratio',
-        'std_dev_ann_pct', 'max_drawdown_pct', 'aum_crore', 'morningstar_rating', 'risk_grade'
-    ]]
-    load_df(df_perf, 'fact_performance')
-
-    # fact_portfolio (from clean_portfolio_holdings.csv)
     df_port = pd.read_csv(f"{processed_dir}/clean_portfolio_holdings.csv")
     df_port['date'] = pd.to_datetime(df_port['portfolio_date'])
-    df_port = df_port[['amfi_code', 'stock_symbol', 'weight_pct', 'sector', 'date']]
-    load_df(df_port, 'fact_portfolio')
 
-    # fact_aum (from clean_aum.csv)
     df_aum = pd.read_csv(f"{processed_dir}/clean_aum.csv")
     df_aum['date'] = pd.to_datetime(df_aum['date'])
-    df_aum = df_aum[['fund_house', 'date', 'aum_crore', 'num_schemes']]
-    load_df(df_aum, 'fact_aum')
-
-    # fact_sip_industry (from clean_monthly_sip_inflows.csv)
-    df_sip = pd.read_csv(f"{processed_dir}/clean_monthly_sip_inflows.csv")
-    load_df(df_sip, 'fact_sip_industry')
 
     # 4. Generate and load dim_date
     print("Generating Date Dimension (dim_date)...")
@@ -127,6 +105,37 @@ def load_data_to_sqlite():
     df_date['is_weekday'] = (df_date['date'].dt.weekday < 5).astype(int)
     
     load_df(df_date, 'dim_date')
+
+    # Now load fact tables
+    load_df(df_nav, 'fact_nav')
+
+    df_tx_load = df_tx.copy()
+    load_df(df_tx_load, 'fact_transactions')
+
+    # fact_performance (from clean_scheme_performance.csv)
+    df_perf = pd.read_csv(f"{processed_dir}/clean_scheme_performance.csv")
+    max_nav_date = df_nav['date'].max()
+    if not isinstance(max_nav_date, str):
+        max_nav_date = max_nav_date.strftime('%Y-%m-%d')
+    df_perf['as_of_date'] = max_nav_date
+    df_perf = df_perf[[
+        'amfi_code', 'as_of_date', 'return_1yr_pct', 'return_3yr_pct', 'return_5yr_pct',
+        'benchmark_3yr_pct', 'alpha', 'beta', 'sharpe_ratio', 'sortino_ratio',
+        'std_dev_ann_pct', 'max_drawdown_pct', 'aum_crore', 'morningstar_rating', 'risk_grade'
+    ]]
+    load_df(df_perf, 'fact_performance')
+
+    # fact_portfolio
+    df_port_load = df_port[['amfi_code', 'stock_symbol', 'weight_pct', 'sector', 'date']].copy()
+    load_df(df_port_load, 'fact_portfolio')
+
+    # fact_aum
+    df_aum_load = df_aum[['fund_house', 'date', 'aum_crore', 'num_schemes']].copy()
+    load_df(df_aum_load, 'fact_aum')
+
+    # fact_sip_industry (from clean_monthly_sip_inflows.csv)
+    df_sip = pd.read_csv(f"{processed_dir}/clean_monthly_sip_inflows.csv")
+    load_df(df_sip, 'fact_sip_industry')
     
     conn.commit()
     conn.close()
