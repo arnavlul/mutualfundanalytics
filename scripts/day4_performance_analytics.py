@@ -54,9 +54,9 @@ for code, group in nav.groupby('amfi_code'):
         if len(start_group) == 0:
             return np.nan
         nav_start = start_group['nav'].iloc[-1]
-        n_days = (group['date'].iloc[-1] - start_group['date'].iloc[-1]).days
-        if n_days == 0: return np.nan
-        return (nav_end / nav_start) ** (365 / n_days) - 1
+        n_trading_days = len(group[group['date'] > start_group['date'].iloc[-1]])
+        if n_trading_days == 0: return np.nan
+        return (nav_end / nav_start) ** (252 / n_trading_days) - 1
         
     cagr_data.append({
         'amfi_code': code,
