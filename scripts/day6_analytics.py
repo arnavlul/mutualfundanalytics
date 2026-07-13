@@ -5,12 +5,15 @@ import sqlite3
 import os
 import nbformat as nbf
 
-os.makedirs('reports', exist_ok=True)
-os.makedirs('data/processed', exist_ok=True)
-os.makedirs('notebooks', exist_ok=True)
-os.makedirs('scripts', exist_ok=True)
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-conn = sqlite3.connect('db/bluestock_mf.db')
+os.makedirs(os.path.join(BASE_DIR, 'reports'), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'data', 'processed'), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'notebooks'), exist_ok=True)
+os.makedirs(os.path.join(BASE_DIR, 'scripts'), exist_ok=True)
+
+db_path = os.path.join(BASE_DIR, 'data', 'db', 'bluestock_mf.db')
+conn = sqlite3.connect(db_path)
 
 # 1. Historical VaR & CVaR (95%)
 print("Task 1: VaR & CVaR")
@@ -28,71 +31,72 @@ for code, group in nav.groupby('amfi_code'):
         cvar_95 = r[r <= var_95].mean()
     else:
         var_95, cvar_95 = np.nan, np.nan
-    var_cvar_data.append({'amfi_code': code, 'VaR_95': var_95, 'CVaR_95': cvar_95})
-pd.DataFrame(var_cvar_data).to_csv('data/processed/var_cvar_report.csv', index=False)
+    var_cvar_data.append({'amfi_code': code, 'historical_var_95': var_95, 'cvar_95': cvar_95})
 
-# 2. Rolling 90-day Sharpe for 5 key funds
+pd.DataFrame(var_cvar_data).to_csv(os.path.join(BASE_DIR, 'data', 'processed', 'var_cvar_report.csv'), index=False)
+
+# 2. Rolling 90-day Sharpe Ratio for Top 5 and Bottom 5
 print("Task 2: Rolling Sharpe")
-top5 = [119551, 120503, 118632, 119092, 120841] 
+top5 = ['119551', '120503', '118272', '112090', '119062']
 plt.figure(figsize=(12, 6))
-rf = 0.065
+rf_daily = 0.065 / 252
 for code in top5:
-    g = nav[nav['amfi_code'] == code].copy().sort_values('date')
-    g = g.set_index('date')
+    g = nav[nav['amfi_code'] == code].copy()
     if len(g) > 90:
-        roll_mean = g['daily_return_pct'].rolling(90).mean() * 252
-        roll_std = g['daily_return_pct'].rolling(90).std() * np.sqrt(252)
-        roll_sharpe = (roll_mean - rf) / roll_std
-        plt.plot(roll_sharpe.index, roll_sharpe, label=str(code))
-plt.title('Rolling 90-day Sharpe Ratio')
+        rolling_mean = g['daily_return_pct'].rolling(90).mean()
+        rolling_std = g['daily_return_pct'].rolling(90).std()
+        rolling_sharpe = (rolling_mean - rf_daily) / rolling_std * np.sqrt(252)
+        plt.plot(g['date'], rolling_sharpe, label=f"Fund {code}")
+
+plt.title('Rolling 90-Day Sharpe Ratio (Top 5 Funds)')
+plt.xlabel('Date')
+plt.ylabel('Annualized Sharpe Ratio')
 plt.legend()
-plt.savefig('reports/rolling_sharpe_chart.png')
+plt.grid(True)
+plt.savefig(os.path.join(BASE_DIR, 'reports', 'rolling_sharpe_chart.png'))
 plt.close()
 
 # 3. Investor Cohort Analysis
 print("Task 3: Cohort Analysis")
-tx = pd.read_sql("SELECT investor_id, amfi_code, transaction_date, amount_inr FROM fact_transactions", conn)
-tx['transaction_date'] = pd.to_datetime(tx['transaction_date'])
-tx['year'] = tx['transaction_date'].dt.year
+txn = pd.read_sql('SELECT * FROM fact_transactions', conn)
+txn['transaction_date'] = pd.to_datetime(txn['transaction_date'])
+txn['cohort_year'] = txn.groupby('investor_id')['transaction_date'].transform('min').dt.year
 
-first_tx = tx.groupby('investor_id')['year'].min().reset_index().rename(columns={'year': 'cohort_year'})
-tx = tx.merge(first_tx, on='investor_id')
-
-cohort_res = tx.groupby('cohort_year').agg(
+cohort_res = txn.groupby('cohort_year').agg(
     total_investors=('investor_id', 'nunique'),
-    total_invested=('amount_inr', 'sum'),
-    avg_sip=('amount_inr', 'mean')
+    total_aum_contribution=('amount_inr', 'sum'),
+    avg_sip_amount=('amount_inr', 'mean')
+).reset_index()
+cohort_res.to_csv(os.path.join(BASE_DIR, 'data', 'processed', 'cohort_analysis.csv'), index=False)
+
+# 4. SIP Continuity Risk Score
+print("Task 4: SIP Continuity")
+sip_txns = txn[txn['transaction_type'] == 'SIP'].sort_values(['investor_id', 'transaction_date'])
+sip_txns['prev_date'] = sip_txns.groupby('investor_id')['transaction_date'].shift(1)
+sip_txns['gap_days'] = (sip_txns['transaction_date'] - sip_txns['prev_date']).dt.days
+
+continuity = sip_txns.groupby('investor_id').agg(
+    total_sips=('tx_id', 'count'),
+    avg_gap_days=('gap_days', 'mean'),
+    max_gap_days=('gap_days', 'max')
 ).reset_index()
 
-top_fund = tx.groupby(['cohort_year', 'amfi_code'])['amount_inr'].sum().reset_index()
-top_fund = top_fund.sort_values(['cohort_year', 'amount_inr'], ascending=[True, False]).groupby('cohort_year').head(1)
-cohort_res = cohort_res.merge(top_fund[['cohort_year', 'amfi_code']].rename(columns={'amfi_code': 'top_fund'}), on='cohort_year')
-cohort_res.to_csv('data/processed/cohort_analysis.csv', index=False)
+continuity['status'] = np.where(
+    (continuity['total_sips'] >= 6) & (continuity['avg_gap_days'] <= 35), 'Consistent',
+    np.where(continuity['avg_gap_days'] > 60, 'High Risk / Stopped', 'Irregular')
+)
+continuity.to_csv(os.path.join(BASE_DIR, 'data', 'processed', 'sip_continuity.csv'), index=False)
 
-# 4. SIP Continuity Analysis
-print("Task 4: SIP Continuity")
-sip_tx = pd.read_sql("SELECT investor_id, transaction_date FROM fact_transactions WHERE transaction_type='SIP'", conn)
-sip_tx['transaction_date'] = pd.to_datetime(sip_tx['transaction_date'])
-sip_tx = sip_tx.sort_values(['investor_id', 'transaction_date'])
-
-sip_counts = sip_tx.groupby('investor_id').size()
-investors_6plus = sip_counts[sip_counts >= 6].index
-
-sip_6plus = sip_tx[sip_tx['investor_id'].isin(investors_6plus)].copy()
-sip_6plus['prev_date'] = sip_6plus.groupby('investor_id')['transaction_date'].shift(1)
-sip_6plus['gap_days'] = (sip_6plus['transaction_date'] - sip_6plus['prev_date']).dt.days
-
-continuity = sip_6plus.groupby('investor_id')['gap_days'].mean().reset_index()
-continuity['at_risk'] = continuity['gap_days'] > 35
-continuity.to_csv('data/processed/sip_continuity.csv', index=False)
-
-# 5. Simple fund recommender
+# 5. Recommender Function
 print("Task 5: Recommender")
-recommender_code = '''import pandas as pd
+recommender_code = '''import os
+import pandas as pd
 import sqlite3
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
 def recommend_funds(risk_appetite):
-    conn = sqlite3.connect('db/bluestock_mf.db')
+    conn = sqlite3.connect(os.path.join(BASE_DIR, 'data', 'db', 'bluestock_mf.db'))
     fund = pd.read_sql('SELECT * FROM dim_fund', conn)
     perf = pd.read_sql('SELECT * FROM fact_performance', conn)
     
@@ -112,7 +116,7 @@ if __name__ == '__main__':
     print("Recommendation for Moderate Risk:")
     print(recommend_funds('Moderate'))
 '''
-with open('scripts/recommender.py', 'w') as f:
+with open(os.path.join(BASE_DIR, 'scripts', 'recommender.py'), 'w') as f:
     f.write(recommender_code)
     
 # 6. Sector HHI
@@ -120,14 +124,14 @@ print("Task 6: Sector HHI")
 port = pd.read_sql("SELECT * FROM fact_portfolio", conn)
 port['weight_pct_sq'] = port['weight_pct'] ** 2
 hhi = port.groupby('amfi_code')['weight_pct_sq'].sum().reset_index().rename(columns={'weight_pct_sq': 'HHI'})
-hhi.to_csv('data/processed/sector_hhi.csv', index=False)
+hhi.to_csv(os.path.join(BASE_DIR, 'data', 'processed', 'sector_hhi.csv'), index=False)
 
 plt.figure(figsize=(10,5))
 plt.hist(hhi['HHI'].dropna(), bins=20)
 plt.title('Distribution of Sector HHI across Equity Funds')
 plt.xlabel('HHI (Sum of squared sector weights)')
 plt.ylabel('Count of Funds')
-plt.savefig('reports/sector_hhi_chart.png')
+plt.savefig(os.path.join(BASE_DIR, 'reports', 'sector_hhi_chart.png'))
 plt.close()
 
 # 7. Advanced Analytics Notebook
@@ -143,12 +147,17 @@ nb['cells'] = [
 4. **Sharpe Stability:** The rolling 90-day Sharpe ratio chart reveals that risk-adjusted performance fluctuates significantly during market corrections, with large-cap funds exhibiting better stability.
 5. **Sector Concentration:** A few equity funds have HHI > 2000, indicating highly concentrated sector bets (e.g., heavily overweight on Financials or IT).
 """),
-    nbf.v4.new_code_cell("""from IPython.display import Image
-display(Image(filename='../reports/rolling_sharpe_chart.png'))"""),
-    nbf.v4.new_code_cell("""display(Image(filename='../reports/sector_hhi_chart.png'))""")
+    nbf.v4.new_code_cell("""import os
+BASE_DIR = os.path.abspath(os.path.join(os.getcwd(), '..'))
+if not os.path.exists(os.path.join(BASE_DIR, 'data', 'db')):
+    BASE_DIR = os.getcwd()
+os.chdir(BASE_DIR)
+from IPython.display import Image
+display(Image(filename='reports/rolling_sharpe_chart.png'))"""),
+    nbf.v4.new_code_cell("""display(Image(filename='reports/sector_hhi_chart.png'))""")
 ]
 
-with open('notebooks/Advanced_Analytics.ipynb', 'w') as f:
+with open(os.path.join(BASE_DIR, 'notebooks', '05_advanced_analytics.ipynb'), 'w') as f:
     nbf.write(nb, f)
 
 print("Done")

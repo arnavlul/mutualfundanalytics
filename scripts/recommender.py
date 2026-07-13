@@ -1,8 +1,11 @@
+import os
 import pandas as pd
 import sqlite3
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
 def recommend_funds(risk_appetite):
-    conn = sqlite3.connect('db/bluestock_mf.db')
+    conn = sqlite3.connect(os.path.join(BASE_DIR, 'data', 'db', 'bluestock_mf.db'))
     fund = pd.read_sql('SELECT * FROM dim_fund', conn)
     perf = pd.read_sql('SELECT * FROM fact_performance', conn)
     

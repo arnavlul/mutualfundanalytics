@@ -8,9 +8,11 @@ st.set_page_config(page_title="Bluestock MF Analytics", layout="wide")
 st.title("Bluestock Mutual Fund Analytics Platform")
 st.markdown("Interactive alternative dashboard to Power BI/Tableau.")
 
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
 @st.cache_data
 def load_data():
-    conn = sqlite3.connect('../db/bluestock_mf.db')
+    conn = sqlite3.connect(os.path.join(BASE_DIR, 'data', 'db', 'bluestock_mf.db'))
     fund_df = pd.read_sql("SELECT * FROM dim_fund", conn)
     perf_df = pd.read_sql("SELECT * FROM fact_performance", conn)
     return fund_df, perf_df
