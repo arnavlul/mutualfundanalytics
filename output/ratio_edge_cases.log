@@ -1,0 +1,110 @@
+# Ratio Edge Cases & Anomaly Log
+# Categorised as: data source issue, version difference, or formula discrepancy
+
+[COMP_001 - Company_001] ROCE Anomaly: Computed 3.38% vs Source 10.88% (Difference: 7.50%) | Category: Formula discrepancy / Capital definition difference
+[COMP_002 - Company_002] ROCE Anomaly: Computed 19.72% vs Source 10.11% (Difference: 9.61%) | Category: Formula discrepancy / Capital definition difference
+[COMP_002 - Company_002] ROE Source Anomaly: Computed 70.61% vs Source 10.11% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_003 - Company_003] ROE Source Anomaly: Computed 55.64% vs Source 12.68% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_004 - Company_004] ROCE Anomaly: Computed 15.94% vs Source 8.23% (Difference: 7.71%) | Category: Formula discrepancy / Capital definition difference
+[COMP_006 - Company_006] ROCE Anomaly: Computed 23.52% vs Source 14.85% (Difference: 8.67%) | Category: Formula discrepancy / Capital definition difference
+[COMP_006 - Company_006] ROE Source Anomaly: Computed 36.11% vs Source 14.85% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_007 - Company_007] ROCE Anomaly: Computed 3.31% vs Source 10.24% (Difference: 6.93%) | Category: Formula discrepancy / Capital definition difference
+[COMP_009 - Company_009] ROCE Anomaly: Computed 0.77% vs Source 12.83% (Difference: 12.06%) | Category: Formula discrepancy / Capital definition difference
+[COMP_009 - Company_009] ROE Source Anomaly: Computed 1.27% vs Source 12.83% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_012 - Company_012] ROE Source Anomaly: Computed 44.77% vs Source 14.94% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_013 - Company_013] ROCE Anomaly: Computed 6.83% vs Source 13.00% (Difference: 6.17%) | Category: Formula discrepancy / Capital definition difference
+[COMP_017 - Company_017] ROCE Anomaly: Computed 18.77% vs Source 13.06% (Difference: 5.71%) | Category: Formula discrepancy / Capital definition difference
+[COMP_017 - Company_017] ROE Source Anomaly: Computed 78.13% vs Source 13.06% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_019 - Company_019] ROCE Anomaly: Computed 1.65% vs Source 8.40% (Difference: 6.75%) | Category: Formula discrepancy / Capital definition difference
+[COMP_020 - TCS] ROE Source Anomaly: Computed 33.87% vs Source 38.50% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_021 - Company_021] ROCE Anomaly: Computed 19.98% vs Source 27.83% (Difference: 7.85%) | Category: Formula discrepancy / Capital definition difference
+[COMP_023 - Company_023] ROCE Anomaly: Computed 60.40% vs Source 17.17% (Difference: 43.23%) | Category: Formula discrepancy / Capital definition difference
+[COMP_023 - Company_023] ROE Source Anomaly: Computed 44.91% vs Source 17.17% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_024 - Company_024] ROCE Anomaly: Computed 12.43% vs Source 26.34% (Difference: 13.91%) | Category: Formula discrepancy / Capital definition difference
+[COMP_025 - Company_025] ROE Source Anomaly: Computed 28.96% vs Source 24.49% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_026 - Company_026] ROCE Anomaly: Computed 33.72% vs Source 24.11% (Difference: 9.61%) | Category: Formula discrepancy / Capital definition difference
+[COMP_027 - Company_027] ROCE Anomaly: Computed 7.07% vs Source 23.27% (Difference: 16.20%) | Category: Formula discrepancy / Capital definition difference
+[COMP_028 - Company_028] ROCE Anomaly: Computed 32.45% vs Source 23.46% (Difference: 8.99%) | Category: Formula discrepancy / Capital definition difference
+[COMP_029 - Company_029] ROCE Anomaly: Computed 6.83% vs Source 17.56% (Difference: 10.73%) | Category: Formula discrepancy / Capital definition difference
+[COMP_029 - Company_029] ROE Source Anomaly: Computed 6.23% vs Source 17.56% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_030 - Company_030] ROCE Anomaly: Computed 41.40% vs Source 15.72% (Difference: 25.68%) | Category: Formula discrepancy / Capital definition difference
+[COMP_030 - Company_030] ROE Source Anomaly: Computed 32.88% vs Source 15.72% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_031 - Company_031] ROCE Anomaly: Computed 38.89% vs Source 19.62% (Difference: 19.27%) | Category: Formula discrepancy / Capital definition difference
+[COMP_031 - Company_031] ROE Source Anomaly: Computed 37.49% vs Source 19.62% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_032 - Company_032] ROCE Anomaly: Computed 16.04% vs Source 25.06% (Difference: 9.02%) | Category: Formula discrepancy / Capital definition difference
+[COMP_034 - Company_034] ROCE Anomaly: Computed 3.00% vs Source 23.55% (Difference: 20.55%) | Category: Formula discrepancy / Capital definition difference
+[COMP_035 - Company_035] ROCE Anomaly: Computed 49.68% vs Source 12.58% (Difference: 37.10%) | Category: Formula discrepancy / Capital definition difference
+[COMP_035 - Company_035] ROE Source Anomaly: Computed 42.93% vs Source 12.58% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_036 - Company_036] ROCE Anomaly: Computed 16.02% vs Source 21.76% (Difference: 5.74%) | Category: Formula discrepancy / Capital definition difference
+[COMP_038 - Company_038] ROCE Anomaly: Computed 35.76% vs Source 18.71% (Difference: 17.05%) | Category: Formula discrepancy / Capital definition difference
+[COMP_039 - Company_039] ROCE Anomaly: Computed 78.92% vs Source 26.31% (Difference: 52.61%) | Category: Formula discrepancy / Capital definition difference
+[COMP_039 - Company_039] ROE Source Anomaly: Computed 74.56% vs Source 26.31% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_040 - Company_040] ROCE Anomaly: Computed 28.75% vs Source 18.34% (Difference: 10.41%) | Category: Formula discrepancy / Capital definition difference
+[COMP_041 - Company_041] ROCE Anomaly: Computed 33.66% vs Source 18.59% (Difference: 15.07%) | Category: Formula discrepancy / Capital definition difference
+[COMP_042 - Company_042] ROCE Anomaly: Computed 60.88% vs Source 22.83% (Difference: 38.05%) | Category: Formula discrepancy / Capital definition difference
+[COMP_042 - Company_042] ROE Source Anomaly: Computed 54.50% vs Source 22.83% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_043 - Company_043] ROCE Anomaly: Computed 29.56% vs Source 23.76% (Difference: 5.80%) | Category: Formula discrepancy / Capital definition difference
+[COMP_044 - Company_044] ROCE Anomaly: Computed 49.68% vs Source 20.33% (Difference: 29.35%) | Category: Formula discrepancy / Capital definition difference
+[COMP_044 - Company_044] ROE Source Anomaly: Computed 40.89% vs Source 20.33% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_045 - Company_045] ROCE Anomaly: Computed 1.67% vs Source 21.13% (Difference: 19.46%) | Category: Formula discrepancy / Capital definition difference
+[COMP_045 - Company_045] ROE Source Anomaly: Computed 1.04% vs Source 21.13% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_047 - Company_047] ROCE Anomaly: Computed 46.49% vs Source 25.80% (Difference: 20.69%) | Category: Formula discrepancy / Capital definition difference
+[COMP_047 - Company_047] ROE Source Anomaly: Computed 39.39% vs Source 25.80% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_048 - Company_048] ROCE Anomaly: Computed 5.25% vs Source 20.37% (Difference: 15.12%) | Category: Formula discrepancy / Capital definition difference
+[COMP_049 - Company_049] ROCE Anomaly: Computed 36.37% vs Source 24.04% (Difference: 12.33%) | Category: Formula discrepancy / Capital definition difference
+[COMP_049 - Company_049] ROE Source Anomaly: Computed 31.12% vs Source 24.04% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_050 - Company_050] ROCE Anomaly: Computed 9.33% vs Source 26.79% (Difference: 17.46%) | Category: Formula discrepancy / Capital definition difference
+[COMP_051 - Company_051] ROCE Anomaly: Computed 7.13% vs Source 22.98% (Difference: 15.85%) | Category: Formula discrepancy / Capital definition difference
+[COMP_052 - Company_052] ROCE Anomaly: Computed 51.62% vs Source 24.67% (Difference: 26.95%) | Category: Formula discrepancy / Capital definition difference
+[COMP_052 - Company_052] ROE Source Anomaly: Computed 48.53% vs Source 24.67% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_054 - Company_054] ROCE Anomaly: Computed 5.63% vs Source 26.19% (Difference: 20.56%) | Category: Formula discrepancy / Capital definition difference
+[COMP_054 - Company_054] ROE Source Anomaly: Computed 4.79% vs Source 26.19% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_055 - Company_055] ROCE Anomaly: Computed 39.33% vs Source 20.87% (Difference: 18.46%) | Category: Formula discrepancy / Capital definition difference
+[COMP_056 - Company_056] ROCE Anomaly: Computed 39.34% vs Source 25.10% (Difference: 14.24%) | Category: Formula discrepancy / Capital definition difference
+[COMP_057 - Company_057] ROCE Anomaly: Computed 52.40% vs Source 14.87% (Difference: 37.53%) | Category: Formula discrepancy / Capital definition difference
+[COMP_057 - Company_057] ROE Source Anomaly: Computed 43.93% vs Source 14.87% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_058 - Company_058] ROCE Anomaly: Computed 181.44% vs Source 25.51% (Difference: 155.93%) | Category: Formula discrepancy / Capital definition difference
+[COMP_058 - Company_058] ROE Source Anomaly: Computed 137.54% vs Source 25.51% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_060 - Company_060] ROCE Anomaly: Computed 50.74% vs Source 18.94% (Difference: 31.80%) | Category: Formula discrepancy / Capital definition difference
+[COMP_060 - Company_060] ROE Source Anomaly: Computed 54.38% vs Source 18.94% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_061 - Company_061] ROCE Anomaly: Computed 19.19% vs Source 25.88% (Difference: 6.69%) | Category: Formula discrepancy / Capital definition difference
+[COMP_062 - Company_062] ROCE Anomaly: Computed 31.75% vs Source 24.72% (Difference: 7.03%) | Category: Formula discrepancy / Capital definition difference
+[COMP_063 - Company_063] ROCE Anomaly: Computed 31.29% vs Source 14.38% (Difference: 16.91%) | Category: Formula discrepancy / Capital definition difference
+[COMP_064 - Company_064] ROCE Anomaly: Computed 33.01% vs Source 12.11% (Difference: 20.90%) | Category: Formula discrepancy / Capital definition difference
+[COMP_065 - Company_065] ROCE Anomaly: Computed 62.95% vs Source 15.75% (Difference: 47.20%) | Category: Formula discrepancy / Capital definition difference
+[COMP_065 - Company_065] ROE Source Anomaly: Computed 58.91% vs Source 15.75% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_066 - Company_066] ROCE Anomaly: Computed 2.16% vs Source 17.42% (Difference: 15.26%) | Category: Formula discrepancy / Capital definition difference
+[COMP_067 - Company_067] ROCE Anomaly: Computed 4.11% vs Source 14.73% (Difference: 10.62%) | Category: Formula discrepancy / Capital definition difference
+[COMP_068 - Company_068] ROCE Anomaly: Computed 15.82% vs Source 27.43% (Difference: 11.61%) | Category: Formula discrepancy / Capital definition difference
+[COMP_069 - Company_069] ROCE Anomaly: Computed 105.52% vs Source 25.42% (Difference: 80.10%) | Category: Formula discrepancy / Capital definition difference
+[COMP_069 - Company_069] ROE Source Anomaly: Computed 83.82% vs Source 25.42% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_070 - Company_070] ROCE Anomaly: Computed 17.26% vs Source 27.22% (Difference: 9.96%) | Category: Formula discrepancy / Capital definition difference
+[COMP_071 - Company_071] ROCE Anomaly: Computed 30.34% vs Source 21.80% (Difference: 8.54%) | Category: Formula discrepancy / Capital definition difference
+[COMP_072 - Company_072] ROCE Anomaly: Computed 10.03% vs Source 19.46% (Difference: 9.43%) | Category: Formula discrepancy / Capital definition difference
+[COMP_073 - Company_073] ROCE Anomaly: Computed 35.40% vs Source 18.72% (Difference: 16.68%) | Category: Formula discrepancy / Capital definition difference
+[COMP_074 - Company_074] ROCE Anomaly: Computed 12.95% vs Source 19.01% (Difference: 6.06%) | Category: Formula discrepancy / Capital definition difference
+[COMP_075 - Company_075] ROCE Anomaly: Computed 33.32% vs Source 25.18% (Difference: 8.14%) | Category: Formula discrepancy / Capital definition difference
+[COMP_075 - Company_075] ROE Source Anomaly: Computed 30.37% vs Source 25.18% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_076 - Company_076] ROCE Anomaly: Computed 271.24% vs Source 23.15% (Difference: 248.09%) | Category: Formula discrepancy / Capital definition difference
+[COMP_076 - Company_076] ROE Source Anomaly: Computed 261.00% vs Source 23.15% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_077 - Company_077] ROCE Anomaly: Computed 53.16% vs Source 21.59% (Difference: 31.57%) | Category: Formula discrepancy / Capital definition difference
+[COMP_077 - Company_077] ROE Source Anomaly: Computed 49.06% vs Source 21.59% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_078 - Company_078] ROCE Anomaly: Computed 24.69% vs Source 19.04% (Difference: 5.65%) | Category: Formula discrepancy / Capital definition difference
+[COMP_079 - Company_079] ROCE Anomaly: Computed 42.15% vs Source 24.15% (Difference: 18.00%) | Category: Formula discrepancy / Capital definition difference
+[COMP_080 - Company_080] ROCE Anomaly: Computed 4.82% vs Source 22.01% (Difference: 17.19%) | Category: Formula discrepancy / Capital definition difference
+[COMP_080 - Company_080] ROE Source Anomaly: Computed 2.95% vs Source 22.01% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_081 - Company_081] ROCE Anomaly: Computed 43.96% vs Source 21.51% (Difference: 22.45%) | Category: Formula discrepancy / Capital definition difference
+[COMP_081 - Company_081] ROE Source Anomaly: Computed 30.60% vs Source 21.51% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_084 - Company_084] ROCE Anomaly: Computed 66.83% vs Source 12.44% (Difference: 54.39%) | Category: Formula discrepancy / Capital definition difference
+[COMP_084 - Company_084] ROE Source Anomaly: Computed 49.75% vs Source 12.44% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_086 - Company_086] ROCE Anomaly: Computed 9.02% vs Source 14.59% (Difference: 5.57%) | Category: Formula discrepancy / Capital definition difference
+[COMP_086 - Company_086] ROE Source Anomaly: Computed 8.00% vs Source 14.59% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_088 - Company_088] ROCE Anomaly: Computed 69.23% vs Source 18.30% (Difference: 50.93%) | Category: Formula discrepancy / Capital definition difference
+[COMP_088 - Company_088] ROE Source Anomaly: Computed 80.34% vs Source 18.30% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_089 - Company_089] ROCE Anomaly: Computed 31.80% vs Source 20.83% (Difference: 10.97%) | Category: Formula discrepancy / Capital definition difference
+[COMP_089 - Company_089] ROE Source Anomaly: Computed 29.17% vs Source 20.83% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_090 - Company_090] ROCE Anomaly: Computed 6.75% vs Source 21.62% (Difference: 14.87%) | Category: Formula discrepancy / Capital definition difference
+[COMP_091 - Company_091] ROCE Anomaly: Computed 98.77% vs Source 13.79% (Difference: 84.98%) | Category: Formula discrepancy / Capital definition difference
+[COMP_091 - Company_091] ROE Source Anomaly: Computed 72.82% vs Source 13.79% | Category: Data source issue (source appears anomalous or unscaled)
+[COMP_092 - Company_092] ROCE Anomaly: Computed 46.86% vs Source 12.39% (Difference: 34.47%) | Category: Formula discrepancy / Capital definition difference
+[COMP_092 - Company_092] ROE Source Anomaly: Computed 36.47% vs Source 12.39% | Category: Data source issue (source appears anomalous or unscaled)
